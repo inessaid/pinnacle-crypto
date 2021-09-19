@@ -1,5 +1,6 @@
 ﻿using stellar_dotnet_sdk;
 using System;
+using UnityEngine;
 
 namespace UStellar.Examples
 {
@@ -48,6 +49,10 @@ namespace UStellar.Examples
             //Log it
             Log(string.Concat("Public: ", newKeyPair.AccountId), 0);
             Log(string.Concat("Secret: ", newKeyPair.SecretSeed), 2);
+
+            PlayerPrefs.SetString("public", newKeyPair.AccountId);
+            PlayerPrefs.SetString("secret", newKeyPair.SecretSeed);
+            Debug.Log("public key"+ PlayerPrefs.GetString("public"));
         }
     }
 }
