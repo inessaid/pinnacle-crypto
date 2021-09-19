@@ -54,6 +54,8 @@ namespace UStellar.Examples
             PlayerPrefs.SetString("secret", newKeyPair.SecretSeed);
             Debug.Log("public key "+ PlayerPrefs.GetString("public"));
             Debug.Log("private key" + PlayerPrefs.GetString("secret"));
+            
+            
 
         }
     }

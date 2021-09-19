@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UStellar.Examples
 {
+    
     public class Menu : MonoBehaviour
     {
+        
+        public InputField mykey;
         public List<Example> examples = new List<Example>()
         {
             new CreateAccount(),
@@ -22,6 +26,10 @@ namespace UStellar.Examples
 
         public void OnClickExample(int id)
         {
+            if (PlayerPrefs.GetString("public") == "null")
+            {
+                PlayerPrefs.SetString("public", mykey.text);
+            }
             OpenExample(id);
         }
 
