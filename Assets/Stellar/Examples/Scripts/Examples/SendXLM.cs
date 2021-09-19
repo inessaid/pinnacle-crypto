@@ -46,6 +46,7 @@ namespace UStellar.Examples
         }
         public string source = "SC7MM2G2RIQKCNQ3IGEU4CLQHX5Y3GBLCOHCWK3EK32BXVLZ6IXT6B2N";
         public string destination = "GCGBA4VUY6YM4NCSGZF3JTCGYVRPY4BFCX5YSLJ7K5NXQXN6RZGX4EHZ";
+        
 
         public override void Run()
         {
@@ -61,7 +62,7 @@ namespace UStellar.Examples
 
             //Check if the destination account exists in the server.
             Log("Checking if destination account exists in server", 0);
-            await server.Accounts.Account(destination);
+            await server.Accounts.Account(PlayerPrefs.GetString("public"));
             Log("Done");
 
             //Load up to date information in source account
@@ -74,7 +75,7 @@ namespace UStellar.Examples
             Asset asset = new AssetTypeNative();
             string amount = "1";
 
-            PaymentOperation operation = new PaymentOperation.Builder(KeyPair.FromAccountId(destination), asset, amount).SetSourceAccount(sourceAccount.KeyPair).Build();
+            PaymentOperation operation = new PaymentOperation.Builder(KeyPair.FromAccountId(PlayerPrefs.GetString("public")), asset, amount).SetSourceAccount(sourceAccount.KeyPair).Build();
             Transaction transaction = new TransactionBuilder(sourceAccount).AddOperation(operation).Build();
 
             //Sign Transaction
