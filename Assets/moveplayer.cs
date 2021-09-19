@@ -4,41 +4,31 @@ using UnityEngine;
 
 public class moveplayer : MonoBehaviour
 {
-    private CharacterController controller;
-    private Vector3 playerVelocity;
-    private bool groundedPlayer;
-    private float playerSpeed = 2.0f;
-    private float jumpHeight = 1.0f;
-    private float gravityValue = -9.81f;
-
-    private void Start()
-    {
-        controller = gameObject.AddComponent<CharacterController>();
-    }
+    private float speed = 6.0f, mouseSenstivity = 1.0f;
+    private float verticalClamp, deltaX, deltaZ, mouseYMove, mouseXMove;
 
     void Update()
     {
-        groundedPlayer = controller.isGrounded;
-        if (groundedPlayer && playerVelocity.y < 0)
-        {
-            playerVelocity.y = 0f;
-        }
+        //move with arrow keyboard
+        deltaX = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
+        deltaZ = Input.GetAxis("Vertical") * speed * Time.deltaTime;
+        transform.Translate(new Vector3(deltaX, 0, deltaZ));
 
-        Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        controller.Move(move * Time.deltaTime * playerSpeed);
+        //rotate with mouse
+        mouseYMove = Input.GetAxis("Mouse Y") * mouseSenstivity;
+        mouseXMove = Input.GetAxis("Mouse X") * mouseSenstivity;
+        verticalClamp += mouseYMove;
+        if (verticalClamp > 30.0f) { ClampVerticalAngle(30); }
+        else if (verticalClamp < -30.0f) { ClampVerticalAngle(-30); }
+        transform.Rotate(-mouseYMove, mouseXMove, 0);
+    }
 
-        if (move != Vector3.zero)
-        {
-            gameObject.transform.forward = move;
-        }
-
-        // Changes the height position of the player..
-        if (Input.GetButtonDown("Jump") && groundedPlayer)
-        {
-            playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
-        }
-
-        playerVelocity.y += gravityValue * Time.deltaTime;
-        controller.Move(playerVelocity * Time.deltaTime);
+    void ClampVerticalAngle(float value)
+    {
+        verticalClamp = value;
+        mouseYMove = 0.0f;
+        Vector3 currentEulerAngle = transform.eulerAngles;
+        currentEulerAngle.x = -value;
+        transform.eulerAngles = currentEulerAngle;
     }
 }
